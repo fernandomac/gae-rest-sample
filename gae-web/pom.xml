@@ -1,0 +1,112 @@
+<project xsi:schemaLocation="http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  
+	<parent>
+		<groupId>edu.gae</groupId>
+		<artifactId>gae-parent</artifactId>
+		<version>1.1.1</version>
+	</parent>
+	<artifactId>gae-web</artifactId>
+	<packaging>war</packaging> 
+    
+	<dependencies>
+	  
+		<dependency>
+		    <groupId>com.google.appengine</groupId>
+		    <artifactId>appengine-endpoints</artifactId>
+		    <version>${appengine.version}</version>
+		</dependency>
+              
+ 		<dependency>
+			<groupId>edu.gae</groupId>
+			<artifactId>gae-service</artifactId>
+			<version>${gae.version}</version>
+		</dependency> 	
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+	   <dependency>
+	       <groupId>org.glassfish.jersey.containers</groupId>
+	       <artifactId>jersey-container-servlet</artifactId>
+	       <version>${jersey.version}</version>	         
+		</dependency>
+   		
+   		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>	
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+	    	<groupId>org.slf4j</groupId>
+	       	<artifactId>slf4j-jdk14</artifactId>
+	       	<version>${slf4j-jdk14.version}</version>
+	  	</dependency>	
+
+		<!--         Test -->
+	  	<dependency>
+	    	<groupId>junit</groupId>
+	      	<artifactId>junit</artifactId>
+	      	<version>${junit.version}</version>
+	      	<scope>test</scope>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-testing</artifactId>
+			<version>${appengine.version}</version>
+   			<scope>test</scope>
+		</dependency>
+	  
+	   <dependency>
+	      <groupId>com.google.appengine</groupId>
+	      <artifactId>appengine-api-stubs</artifactId>
+	      <version>${appengine.version}</version>
+	      <scope>test</scope>
+	  </dependency>
+	  
+	  <dependency>
+		<groupId>edu.gae</groupId>
+		<artifactId>gae-domain</artifactId>
+		<type>test-jar</type>
+		<version>${gae.version}</version>
+		<scope>test</scope>
+		</dependency>				
+	</dependencies>
+
+    <build>
+    	<finalName>gae</finalName>
+        <outputDirectory>${project.build.directory}/WEB-INF/classes</outputDirectory>        
+        <plugins>
+        	<plugin>
+        	 	<artifactId>maven-dependency-plugin</artifactId>
+        	</plugin>
+        	
+        	<plugin>
+        	 	<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+        	</plugin>
+        	
+        	<plugin>
+        	 	<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+        	</plugin>
+        	
+        	<plugin>
+        		<groupId>com.google.appengine</groupId>
+	            <artifactId>appengine-maven-plugin</artifactId>
+	        </plugin>        
+	        
+	        <plugin>        
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-war-plugin</artifactId>
+	        </plugin>               
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<configuration>
+    	<relationship-type>non-cumulative</relationship-type>    
+    	<custom-converters>			
+			<converter type="edu.gae.service.converter.DataSelectableConverter">
+				<class-a>edu.gae.domain.entity.base.Selectable</class-a>
+				<class-b>edu.gae.model.ref.SelectableDto</class-b>
+			</converter>
+			
+			<converter type="edu.gae.service.converter.SearcheableStringConverter">
+				<class-a>java.lang.String</class-a>
+				<class-b>edu.gae.domain.entity.base.SearcheableString</class-b>
+			</converter>			
+		</custom-converters>
+		
+		 <copy-by-references>
+			 <copy-by-reference>edu.gae.domain.entity.ref.*</copy-by-reference>		
+		 </copy-by-references> 
+	</configuration>	
+	
+	<mapping>
+		<class-a>edu.gae.model.ModelDto</class-a>
+		<class-b>edu.gae.domain.entity.base.AbstractEntityById</class-b> 
+		<field-exclude type="one-way">
+			<a>id</a>
+			<b>id</b>
+		</field-exclude>		       
+	 </mapping>
+	 
+	 <mapping>
+		<class-a>edu.gae.model.LifeCycleDto</class-a>
+		<class-b>edu.gae.domain.entity.base.AbstractLifeCycleEntity</class-b>		
+		<field-exclude type="one-way">
+			<a>active</a>
+			<b>active</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>createDate</a>
+			<b>createDate</b>
+		</field-exclude>		       
+	 </mapping>		
+	 
+	 <mapping>
+		<class-a>edu.gae.model.UserDto</class-a>
+		<class-b>edu.gae.domain.entity.User</class-b> 			
+		<field-exclude type="one-way">
+			<a>lastAccessDate</a>
+			<b>lastAccessDate</b>
+		</field-exclude>		       
+	 </mapping>
+
+</mappings>  

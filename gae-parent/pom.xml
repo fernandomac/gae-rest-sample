@@ -1,0 +1,124 @@
+<project xsi:schemaLocation="http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>  
+	<groupId>edu.gae</groupId>
+	<artifactId>gae-parent</artifactId>
+	<version>1.1.1</version>
+	<packaging>pom</packaging>
+
+	<modules>	
+	    <module>../gae-domain</module>
+	    <module>../gae-model</module>
+	    <module>../gae-service</module>
+	    <module>../gae-web</module>
+	</modules>
+
+	<properties>
+		<app.id>{your-app-id}</app.id>
+		<app.version>1</app.version>
+	    <gae.version>1.1.1</gae.version>	
+	    <appengine.version>1.9.54</appengine.version>	    
+	    <objectify.version>5.1.6</objectify.version>
+	    <google-oauth-client-jetty.version>1.21.0</google-oauth-client-jetty.version>
+	    <google-api-services-drive.version>v3-rev2-1.21.0</google-api-services-drive.version>
+	    <appengine-gcs-client.version>RELEASE</appengine-gcs-client.version>	    
+	  	<jackson-annotations.version>2.2.2</jackson-annotations.version>
+	  	<reflections.version>0.9.9-RC1</reflections.version>
+	  	<commons-dbcp.version>1.4</commons-dbcp.version>
+	  	<commons-lang3.version>3.0</commons-lang3.version>
+	  	<dozer.version>5.5.1</dozer.version>
+	  	<bval-jsr303.version>0.5</bval-jsr303.version>
+	  	<validation-api.version>1.1.0.Final</validation-api.version>	
+		<jersey.version>2.23.2</jersey.version>
+		<servlet-api.version>2.5</servlet-api.version>		
+		<log4j.version>1.2.16</log4j.version>
+		<slf4j-jdk14.version>1.7.5</slf4j-jdk14.version>
+		<junit.version>4.12</junit.version>		
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>    
+		<datastore.backing_store>${basedir}/datastore/local_db.bin</datastore.backing_store>
+	</properties>
+	
+	<build>
+		<pluginManagement>
+			<plugins>				 
+				<plugin> 
+		            <artifactId>maven-dependency-plugin</artifactId> 
+		            <executions> 		          		            
+			            <execution> 
+				            <phase>install</phase> 
+				            <goals> 
+				            	<goal>copy-dependencies</goal> 
+				            </goals> 
+				            <configuration> 
+				            	<outputDirectory>lib</outputDirectory> 
+				            </configuration> 
+			            </execution>	           
+		            </executions> 
+	           	</plugin> 
+				
+				<plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <version>3.1</version>
+	                <configuration>
+	                    <source>1.8</source>
+	                    <target>1.8</target>
+	                </configuration>
+	            </plugin> 
+	            
+	            <plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-jar-plugin</artifactId>
+			        <version>2.6</version>
+			        <executions>
+			          <execution>
+			            <goals>
+			              <goal>test-jar</goal>
+			            </goals>
+			          </execution>
+			        </executions>
+			    </plugin>
+			    
+			    <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-war-plugin</artifactId>
+	                <version>2.4</version>
+	                <configuration>
+						<archiveClasses>true</archiveClasses>
+						<webResources>
+							<resource>
+								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+								<filtering>true</filtering>
+								<targetPath>WEB-INF</targetPath>
+							</resource>
+						</webResources>
+						<warSourceExcludes>**/gae.css,...,**/main.css</warSourceExcludes>					
+					</configuration>
+	            </plugin>
+			    
+			    <plugin>
+	                <groupId>com.google.appengine</groupId>
+	                <artifactId>appengine-maven-plugin</artifactId>
+	                <version>${appengine.version}</version>
+					<configuration>
+						<enableJarClasses>false</enableJarClasses>
+						<port>8888</port>
+						<version>${app.version}</version>			
+						
+						<jvmFlags>
+							<!-- Enables remote debug -->
+							<jvmFlag>-Xdebug</jvmFlag>
+							<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=7777,server=y,suspend=n</jvmFlag>
+
+							<jvmFlag>-Ddatastore.backing_store=${datastore.backing_store}</jvmFlag>
+							<jvmFlag>-Xmx2048m</jvmFlag>
+							<jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
+						</jvmFlags>
+					</configuration>
+	            </plugin>      
+			</plugins>
+		</pluginManagement>		
+	</build>
+	
+</project>

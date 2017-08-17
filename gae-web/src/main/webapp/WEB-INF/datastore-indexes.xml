@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="true">
+
+	<datastore-index kind="User" ancestor="false" source="manual">
+		<property name="active" direction="asc"/>
+		<property name="name.email" direction="asc"/>
+		<property name="name.cleanesed" direction="asc"/>
+		<property name="name.startWith" direction="asc"/>
+	</datastore-index>
+   
+</datastore-indexes>
