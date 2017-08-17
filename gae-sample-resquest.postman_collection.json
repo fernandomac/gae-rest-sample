@@ -1,0 +1,193 @@
+{
+	"variables": [],
+	"info": {
+		"name": "fmachado",
+		"_postman_id": "8e4be9e8-1ea6-f6ec-a7eb-22efbc4e1c0c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"responseJSON = JSON.parse(responseBody);",
+							"",
+							"console.log(responseJSON.token);",
+							"",
+							"postman.setGlobalVariable(\"auth-token\", responseJSON.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/rest/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-email",
+						"value": "master@gae.com",
+						"description": ""
+					},
+					{
+						"key": "user-pass",
+						"value": "1234",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Master",
+			"request": {
+				"url": "{{host}}/rest/user/master",
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-email",
+						"value": "master@gae.com",
+						"description": ""
+					},
+					{
+						"key": "user-pass",
+						"value": "1234",
+						"description": ""
+					},
+					{
+						"key": "master-pass",
+						"value": "3246gfs786485%*($%",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=utf-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Create",
+			"request": {
+				"url": "{{host}}/rest/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-token",
+						"value": "{{auth-token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\"name\": \"Master User Admin\", \n\t\"email\": \"admin@gae.com\",\n\t\"password\": \"1234\",\n\t\"profile\": {\n        \"key\": \"ADMIN\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User List",
+			"request": {
+				"url": {
+					"raw": "{{host}}/rest/user?name=mast*&size=1&page=0",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"rest",
+						"user"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "mast*",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "size",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-token",
+						"value": "{{auth-token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\"name\": \"User Admin\", \n\t\"email\": \"admin@gae.com\",\n\t\"password\": \"1234\",\n\t\"profile\": {\n        \"key\": \"ADMIN\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Image",
+			"request": {
+				"url": "{{host}}/rest/user/image/5629499534213120",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "user-token",
+						"value": "{{auth-token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
