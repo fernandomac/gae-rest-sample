@@ -22,6 +22,8 @@ import edu.gae.domain.repository.PersistableDao;
 
 public abstract class DatastoreAbstractDAO<T> implements PersistableDao<T> {
 	
+	private static final String WILD_CARD = "*";
+	
 	protected final Class<T> c;
 
 	public DatastoreAbstractDAO(Class<T> modelClass) {
@@ -91,18 +93,41 @@ public abstract class DatastoreAbstractDAO<T> implements PersistableDao<T> {
 			for (String field : filters.keySet()) {
 				Object value = filters.get(field);
 				if (value instanceof Period) {
-					Period periodo = (Period) value;
-					q = q.filter(new FilterPredicate(field, 
-							com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN_OR_EQUAL, 
-							DateUtils.truncate(periodo.getInitialDate(), Calendar.DATE)) );
-					q = q.filter(new FilterPredicate(field, 
-							com.google.appengine.api.datastore.Query.FilterOperator.LESS_THAN, 
-							DateUtils.truncate(DateUtils.addDays(periodo.getFinalDate(),1), Calendar.DATE)) );					
-				} else if (isValid(value)){
+					q = buildPeriodFilter(q, field, value);
+				} else if (isWildcardStringCriteria(value)) {
+					q = buildWildCardStringFilter(q, field, (String) value);
+				} else if (isDefaultValidCriteria(value)){
 					q = q.filter(field, value);
 				}
 			}
 		}
+		return q;
+	}
+
+	private boolean isWildcardStringCriteria(Object value) {
+		return value instanceof String 
+				&& StringUtils.isNotBlank((String)value)
+				&& ((String) value).contains(WILD_CARD);
+	}
+
+	private Query<T> buildWildCardStringFilter(Query<T> q, String field, String value) {
+		q = q.filter(new FilterPredicate(field, 
+				com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN_OR_EQUAL, 
+				value));
+		q = q.filter(new FilterPredicate(field, 
+				com.google.appengine.api.datastore.Query.FilterOperator.LESS_THAN, 
+				field + "\uFFFD") );		
+		return q;
+	}
+
+	private Query<T> buildPeriodFilter(Query<T> q, String field, Object value) {
+		Period periodo = (Period) value;
+		q = q.filter(new FilterPredicate(field, 
+				com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN_OR_EQUAL, 
+				DateUtils.truncate(periodo.getInitialDate(), Calendar.DATE)) );
+		q = q.filter(new FilterPredicate(field, 
+				com.google.appengine.api.datastore.Query.FilterOperator.LESS_THAN, 
+				DateUtils.truncate(DateUtils.addDays(periodo.getFinalDate(),1), Calendar.DATE)) );
 		return q;
 	}
 
@@ -136,7 +161,7 @@ public abstract class DatastoreAbstractDAO<T> implements PersistableDao<T> {
 		return pq.asList(FetchOptions.Builder.withDefaults());
 	}
 	
-	private boolean isValid(Object value) {
+	private boolean isDefaultValidCriteria(Object value) {
 		if (value instanceof String){
 			return StringUtils.isNotBlank((String)value);
 		} else {
